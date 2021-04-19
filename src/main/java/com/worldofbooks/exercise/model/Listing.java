@@ -21,6 +21,7 @@ public class Listing {
 
     private String description;
 
+
     private UUID inventory_item_location_id;
 
     private Currency listing_price;
