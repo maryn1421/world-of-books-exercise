@@ -1,7 +1,9 @@
 package com.worldofbooks.exercise.model;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,6 +14,8 @@ import java.util.UUID;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Listing {
 
     @Id
@@ -24,7 +28,7 @@ public class Listing {
     @ManyToOne
     private Location inventory_item_location_id;
 
-    private Currency listing_price;
+    private Double listing_price;
 
     private String currency;
 
@@ -39,4 +43,5 @@ public class Listing {
     private Date upload_time;
 
     private String owner_email_address;
+
 }

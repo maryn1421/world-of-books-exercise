@@ -23,17 +23,17 @@ public class ListingRequest {
 
     private String description;
 
-    private Location inventory_item_location_id;
+    private UUID inventory_item_location_id;
 
-    private Currency listing_price;
+    private Double listing_price;
 
     private String currency;
 
     private Integer quantity;
 
-    private ListingStatus listing_status;
+    private Long listing_status;
 
-    private MarketPlace marketplace;
+    private Long marketplace;
 
     private Date upload_time;
 
