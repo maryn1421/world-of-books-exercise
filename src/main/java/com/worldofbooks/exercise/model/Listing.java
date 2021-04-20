@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.Currency;
 import java.util.Date;
 import java.util.UUID;
@@ -13,7 +14,6 @@ import java.util.UUID;
 @Data
 public class Listing {
 
-
     @Id
     private UUID id;
 
@@ -21,8 +21,8 @@ public class Listing {
 
     private String description;
 
-
-    private UUID inventory_item_location_id;
+    @ManyToOne
+    private Location inventory_item_location_id;
 
     private Currency listing_price;
 
@@ -30,12 +30,13 @@ public class Listing {
 
     private Integer quantity;
 
-    private Long listing_status;
+    @ManyToOne
+    private ListingStatus listing_status;
 
-    private Long marketplace;
+    @ManyToOne
+    private MarketPlace marketplace;
 
     private Date upload_time;
 
     private String owner_email_address;
-
 }
