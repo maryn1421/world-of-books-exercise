@@ -43,13 +43,10 @@ public class ListingProvider {
 
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = format.parse (listingRequest.getUpload_time() );
+        Date date = format.parse(listingRequest.getUpload_time());
 
 
-
-        Listing listing = new Listing (
-
-
+        Listing listing = new Listing(
                 UUID.fromString(listingRequest.getId()),
                 listingRequest.getTitle(),
                 listingRequest.getDescription(),

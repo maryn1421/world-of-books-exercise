@@ -1,6 +1,5 @@
 package com.worldofbooks.exercise.database;
 
-import com.worldofbooks.exercise.model.Listing;
 import com.worldofbooks.exercise.model.ListingStatus;
 import com.worldofbooks.exercise.model.Location;
 import com.worldofbooks.exercise.model.MarketPlace;
@@ -204,21 +203,3 @@ public class Seeder {
 
 
 }
-
-/*
-  if (locationRepository.findById(UUID.fromString((String) json.get("location_id"))).isPresent()) {
-                        location = locationRepository.findById(UUID.fromString((String) json.get("location_id"))).get();
-                    } else {
-                        throw new Exception("No location found, did you initialize the locations?");
-                    }
-                    if (listingStatusRepository.findById(Long.parseLong(json.get("listing_status").toString())).isPresent()) {
-                        listingStatus = listingStatusRepository.findById(Long.parseLong(json.get("listing_status").toString())).get();
-                    } else {
-                        throw new Exception("No listing status found, did you initialize the listing statuses?");
-                    }
-                    if (marketplaceRepository.findById(Long.parseLong( json.get("marketplace").toString())).isPresent()) {
-                        marketPlace = marketplaceRepository.findById(Long.parseLong( json.get("marketplace").toString())).get();
-                    } else {
-                        throw new Exception("No marketplace found, did you initialize the marketplaces?");
-                    }
- */
