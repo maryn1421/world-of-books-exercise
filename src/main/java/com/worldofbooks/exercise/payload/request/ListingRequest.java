@@ -1,34 +1,29 @@
-package com.worldofbooks.exercise.model;
+package com.worldofbooks.exercise.payload.request;
 
-
+import com.worldofbooks.exercise.model.ListingStatus;
+import com.worldofbooks.exercise.model.Location;
+import com.worldofbooks.exercise.model.MarketPlace;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import java.util.Currency;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity
+
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Listing {
+public class ListingRequest {
 
-    @Id
     private UUID id;
 
     private String title;
 
     private String description;
 
-    @ManyToOne
-    private Location inventory_item_location_id;
+    private UUID inventory_item_location_id;
 
     private Double listing_price;
 
@@ -36,14 +31,11 @@ public class Listing {
 
     private Integer quantity;
 
-    @ManyToOne
-    private ListingStatus listing_status;
+    private Long listing_status;
 
-    @ManyToOne
-    private MarketPlace marketplace;
+    private Long marketplace;
 
     private Date upload_time;
 
     private String owner_email_address;
-
 }
