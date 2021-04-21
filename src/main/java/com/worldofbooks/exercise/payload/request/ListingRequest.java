@@ -4,6 +4,7 @@ import com.worldofbooks.exercise.model.ListingStatus;
 import com.worldofbooks.exercise.model.Location;
 import com.worldofbooks.exercise.model.MarketPlace;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,15 +16,16 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ListingRequest {
 
-    private UUID id;
+    private String id;
 
     private String title;
 
     private String description;
 
-    private UUID inventory_item_location_id;
+    private UUID location_id;
 
     private Double listing_price;
 
@@ -35,7 +37,7 @@ public class ListingRequest {
 
     private Long marketplace;
 
-    private Date upload_time;
+    private String upload_time;
 
     private String owner_email_address;
 }

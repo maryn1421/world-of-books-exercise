@@ -4,10 +4,13 @@ import com.worldofbooks.exercise.model.Listing;
 import com.worldofbooks.exercise.model.ListingStatus;
 import com.worldofbooks.exercise.model.Location;
 import com.worldofbooks.exercise.model.MarketPlace;
+import com.worldofbooks.exercise.payload.request.ListingRequest;
 import com.worldofbooks.exercise.repository.ListingRepository;
 import com.worldofbooks.exercise.repository.ListingStatusRepository;
 import com.worldofbooks.exercise.repository.LocationRepository;
 import com.worldofbooks.exercise.repository.MarketplaceRepository;
+import com.worldofbooks.exercise.service.ListingProvider;
+import com.worldofbooks.exercise.service.Validation;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,12 +22,13 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
 
 @Service
 public class Seeder {
+    @Autowired
+    Validation validation;
 
     @Autowired
     ListingRepository listingRepository;
@@ -38,6 +42,10 @@ public class Seeder {
     @Autowired
     MarketplaceRepository marketplaceRepository;
 
+    @Autowired
+    ListingProvider listingProvider;
+
+
     private static JSONArray fetchByURl(String Url) throws IOException, ParseException {
         StringBuilder inline = new StringBuilder();
 
@@ -46,7 +54,6 @@ public class Seeder {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.connect();
-        //Get the response status of the Rest API
         int responsecode = conn.getResponseCode();
 
 
@@ -60,7 +67,6 @@ public class Seeder {
 
             sc.close();
         }
-
 
         JSONParser parser = new JSONParser();
         JSONArray array = (JSONArray) parser.parse(inline.toString());
@@ -79,41 +85,38 @@ public class Seeder {
                 Location location = new Location();
                 MarketPlace marketPlace = new MarketPlace();
                 ListingStatus listingStatus = new ListingStatus();
+
+
+
+
+
+
                 JSONParser parse = new JSONParser();
                 try {
                     JSONObject json = (JSONObject) parse.parse(item.toString());
 
-                    if (locationRepository.findById(UUID.fromString((String) json.get("location_id"))).isPresent()) {
-                        location = locationRepository.findById(UUID.fromString((String) json.get("location_id"))).get();
-                    } else {
-                        throw new Exception("No location found, did you initialize the locations?");
-                    }
-                    if (listingStatusRepository.findById(Long.parseLong((String) json.get("listing_status"))).isPresent()) {
-                        listingStatus = listingStatusRepository.findById((Long) json.get("listing_status")).get();
-                    } else {
-                        throw new Exception("No listing status found, did you initialize the listing statuses?");
-                    }
-                    if (marketplaceRepository.findById(Long.parseLong((String) json.get("marketplace"))).isPresent()) {
-                        marketPlace = marketplaceRepository.findById((Long) json.get("marketplace")).get();
-                    } else {
-                        throw new Exception("No marketplace found, did you initialize the marketplaces?");
-                    }
 
 
-                    listingRepository.save(
-                            Listing.builder()
-                                    .id(UUID.fromString((String) json.get("id")))
+
+                           ListingRequest request =  ListingRequest.builder()
+                                    .id((String) json.get("id"))
                                     .title((String) json.get("title"))
                                     .description((String) json.get("description"))
-                                    .inventory_item_location_id(location)
-                                    .listing_price((Double) json.get("listing_price"))
-                                    .listing_status(listingStatus)
+                                    .location_id((UUID.fromString((String) json.get("location_id"))))
+                                    .listing_price(Double.parseDouble(json.get("listing_price").toString()))
+                                    .listing_status(Long.parseLong(json.get("listing_status").toString()))
                                     .currency((String) json.get("currency"))
-                                    .marketplace(marketPlace)
+                                    .marketplace(Long.parseLong( json.get("marketplace").toString()))
                                     .owner_email_address((String) json.get("owner_email_address"))
-                                    .quantity((Integer) json.get("quantity"))
-                                    .upload_time((Date) json.get("upload_time"))
-                                    .build());
+                                    .quantity(Integer.parseInt(json.get("quantity").toString()))
+                                    .upload_time((String) json.get("upload_time"))
+                                    .build();
+
+
+                           if (validation.validateNewListing(request)) {
+                               listingProvider.addNewListing(request);
+                           };
+
 
 
                 } catch (Exception e) {
@@ -199,5 +202,23 @@ public class Seeder {
         });
     }
 
+
 }
 
+/*
+  if (locationRepository.findById(UUID.fromString((String) json.get("location_id"))).isPresent()) {
+                        location = locationRepository.findById(UUID.fromString((String) json.get("location_id"))).get();
+                    } else {
+                        throw new Exception("No location found, did you initialize the locations?");
+                    }
+                    if (listingStatusRepository.findById(Long.parseLong(json.get("listing_status").toString())).isPresent()) {
+                        listingStatus = listingStatusRepository.findById(Long.parseLong(json.get("listing_status").toString())).get();
+                    } else {
+                        throw new Exception("No listing status found, did you initialize the listing statuses?");
+                    }
+                    if (marketplaceRepository.findById(Long.parseLong( json.get("marketplace").toString())).isPresent()) {
+                        marketPlace = marketplaceRepository.findById(Long.parseLong( json.get("marketplace").toString())).get();
+                    } else {
+                        throw new Exception("No marketplace found, did you initialize the marketplaces?");
+                    }
+ */

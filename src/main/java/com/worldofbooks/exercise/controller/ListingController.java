@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,8 +36,8 @@ public class ListingController {
 
     }
 
-    @PostMapping
-    public ResponseEntity<String> addListing(@RequestBody ListingRequest listingRequest) {
+    @PostMapping()
+    public ResponseEntity<String> addListing(@RequestBody ListingRequest listingRequest) throws IllegalAccessException, ParseException {
         boolean successful = listingProvider.addNewListing(listingRequest);
         if (successful) {
             return ResponseEntity.ok("Listing added successfully");
