@@ -10,6 +10,7 @@ import com.worldofbooks.exercise.repository.LocationRepository;
 import com.worldofbooks.exercise.repository.MarketplaceRepository;
 import com.worldofbooks.exercise.service.ListingProvider;
 import com.worldofbooks.exercise.service.Validation;
+import com.worldofbooks.exercise.utility.ErrorHandler;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -26,6 +27,9 @@ import java.util.UUID;
 
 @Service
 public class Seeder {
+    @Autowired
+    ErrorHandler errorHandler;
+
     @Autowired
     Validation validation;
 
@@ -122,7 +126,7 @@ public class Seeder {
                     e.printStackTrace();
                 }
             });
-
+            errorHandler.submitErrorToFile();
         }
 
     }

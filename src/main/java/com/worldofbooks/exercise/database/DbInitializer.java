@@ -15,10 +15,14 @@ public class DbInitializer {
 
     @PostConstruct
     public void postConstruct() throws IOException, ParseException {
+
         seeder.getListingStatusData();
         seeder.getMarketplaceData();
         seeder.getLocationData();
         seeder.getListingData();
+
+
+
     }
 
 

@@ -5,6 +5,7 @@ import com.worldofbooks.exercise.repository.ListingRepository;
 import com.worldofbooks.exercise.repository.ListingStatusRepository;
 import com.worldofbooks.exercise.repository.LocationRepository;
 import com.worldofbooks.exercise.repository.MarketplaceRepository;
+import com.worldofbooks.exercise.utility.ErrorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,12 @@ import java.util.regex.Pattern;
 
 @Service
 public class Validation {
+
+
+
+    @Autowired
+    ErrorHandler errorHandler;
+
     @Autowired
     MarketplaceRepository marketplaceRepository;
 
@@ -34,39 +41,39 @@ public class Validation {
 
 
         if (!isUUIDValid(listingRequest.getId()) || listingRequest.getId() == null) {
-            handleError("id");
+            handleError(listingRequest,"id");
             return false;
         }
         if (listingRequest.getCurrency().length() != 3 || listingRequest.getCurrency() == null) {
-            handleError("currency");
+            handleError(listingRequest,"currency");
             return false;
         }
 
         if (listingRequest.getQuantity() < 0) {
-            handleError("quantity");
+            handleError(listingRequest,"quantity");
             return false;
         }
         if (!hasDouble2Decimals(listingRequest.getListing_price()) || listingRequest.getListing_price() < 0) {
-            handleError("listing price");
+            handleError(listingRequest,"listing price");
             return false;
         }
 
         if (!isMarketplaceValid(listingRequest.getMarketplace()) || listingRequest.getMarketplace() == null) {
-            handleError("marketplace");
+            handleError(listingRequest,"marketplace");
             return false;
         }
         if (!isListingStatusValid(listingRequest.getListing_status()) || listingRequest.getListing_status() == null) {
-            handleError("listing status");
+            handleError(listingRequest,"listing status");
             return false;
         }
         if (!isLocationValid(listingRequest.getLocation_id()) || listingRequest.getLocation_id() == null) {
-            handleError("location");
+            handleError(listingRequest,"location");
             return false;
         }
 
         if (!isDateValid(listingRequest.getUpload_time()) || listingRequest.getUpload_time() == null)
         if (!isEmailFormatValid(listingRequest.getOwner_email_address()) || listingRequest.getOwner_email_address() == null) {
-            handleError("email");
+            handleError(listingRequest,"email");
             return false;
         }
 
@@ -130,8 +137,8 @@ public class Validation {
     }
 
 
-    private void handleError(String type) {
-        System.out.println("ERROR: " + type);
+    private void handleError(ListingRequest listingRequest ,String type) {
+       errorHandler.addANewError(listingRequest, type);
     }
 
 }
