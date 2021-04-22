@@ -1,0 +1,102 @@
+[
+  {
+    "id": "0fe479bb-fe39-4265-b59f-bb4ac5a060d4",
+    "manager_name": "Garrot McCowen",
+    "phone": "517-128-3944",
+    "address_primary": "796 Meadow Vale Parkway",
+    "address_secondary": null,
+    "country": "Egypt",
+    "town": "Talā",
+    "postal_code": null
+  },
+  {
+    "id": "ac867cd8-c321-42ab-b179-01a4b8301a9c",
+    "manager_name": "Fayre Sach",
+    "phone": "521-859-7127",
+    "address_primary": "3 Autumn Leaf Crossing",
+    "address_secondary": null,
+    "country": "Guatemala",
+    "town": "Senahú",
+    "postal_code": "16008"
+  },
+  {
+    "id": "bfcd9dc2-3ead-470b-9846-5a3f6d8f32a1",
+    "manager_name": "Anya Brummell",
+    "phone": "362-456-8123",
+    "address_primary": "8 Killdeer Pass",
+    "address_secondary": null,
+    "country": "Sweden",
+    "town": "Hägersten",
+    "postal_code": "129 55"
+  },
+  {
+    "id": "5ae22efb-f875-4134-a03d-6402efa31dc5",
+    "manager_name": "Wilona Catherall",
+    "phone": "784-874-1411",
+    "address_primary": "0 Welch Pass",
+    "address_secondary": null,
+    "country": "China",
+    "town": "Qitan",
+    "postal_code": null
+  },
+  {
+    "id": "1d551b07-fd16-4760-88a3-4aa4fda13a2b",
+    "manager_name": "Gwenneth Abbys",
+    "phone": "194-256-0044",
+    "address_primary": "6791 Derek Street",
+    "address_secondary": null,
+    "country": "Iran",
+    "town": "Khorramābād",
+    "postal_code": null
+  },
+  {
+    "id": "52ea143e-cb45-43af-981e-92cedb89f7a8",
+    "manager_name": "Doll Atwood",
+    "phone": "587-652-0414",
+    "address_primary": "7 Sauthoff Road",
+    "address_secondary": null,
+    "country": "China",
+    "town": "Bajingzi",
+    "postal_code": null
+  },
+  {
+    "id": "c47ab7b4-3a94-4218-8e0b-4bada1fb05c0",
+    "manager_name": "Antony Turmel",
+    "phone": "929-562-0631",
+    "address_primary": "1414 Oriole Drive",
+    "address_secondary": null,
+    "country": "Thailand",
+    "town": "Prachuap Khiri Khan",
+    "postal_code": "77120"
+  },
+  {
+    "id": "5c3a4cf8-1ac4-456d-ba85-a782ff475256",
+    "manager_name": "Angy Ivimy",
+    "phone": "731-126-2728",
+    "address_primary": "4 Shopko Pass",
+    "address_secondary": null,
+    "country": "Russia",
+    "town": "Neyvo-Rudyanka",
+    "postal_code": "624170"
+  },
+  {
+    "id": "013cc380-c18b-4c87-8043-16e14f7127de",
+    "manager_name": "Iosep MacRury",
+    "phone": "372-209-8838",
+    "address_primary": "3 Old Gate Plaza",
+    "address_secondary": null,
+    "country": "Finland",
+    "town": "Pyhäjoki",
+    "postal_code": "86101"
+  },
+  {
+    "id": "5249f33c-fadf-44d9-ab70-471df29c20a6",
+    "manager_name": "Kip Pecha",
+    "phone": "301-746-1394",
+    "address_primary": "923 Eastlawn Lane",
+    "address_secondary": null,
+    "country": "Philippines",
+    "town": "Hernani",
+    "postal_code": "6804"
+  }
+]
