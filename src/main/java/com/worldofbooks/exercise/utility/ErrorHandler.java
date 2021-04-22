@@ -52,7 +52,11 @@ public class ErrorHandler {
     private String getCurrentTime() {
         LocalDateTime dateTime = LocalDateTime.now(); // Gets the current date and time
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        return dateTime.format(formatter).replaceAll(" ", "");
+        String result =  dateTime.format(formatter).replaceAll(" ", "");
+        result = result.replace(":", "");
+        result = result.replace("-", "");
+        return result;
+
     }
 
 

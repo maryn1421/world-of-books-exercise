@@ -117,10 +117,11 @@ public class Validation {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         try {
             Date dateCheck = format.parse(date);
+            return true;
         } catch (ParseException e) {
             return false;
         }
-        return true;
+
     }
 
 
