@@ -12,6 +12,11 @@ import com.worldofbooks.exercise.repository.MarketplaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
 @Service
 public class ListingProvider {
     @Autowired
@@ -26,17 +31,23 @@ public class ListingProvider {
     @Autowired
     MarketplaceRepository marketplaceRepository;
 
-    public Boolean addNewListing(ListingRequest listingRequest) {
+    @Autowired
+    Validation validation;
 
-
-        Location location = locationRepository.findById(listingRequest.getInventory_item_location_id()).get();
+    public Boolean addNewListing(ListingRequest listingRequest) throws ParseException {
+        Location location = locationRepository.findById(listingRequest.getLocation_id()).get();
 
         ListingStatus listingStatus = listingStatusRepository.findById(listingRequest.getListing_status()).get();
 
         MarketPlace marketPlace = marketplaceRepository.findById(listingRequest.getMarketplace()).get();
 
-        Listing listing = new Listing (
-                listingRequest.getId(),
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = format.parse(listingRequest.getUpload_time());
+
+
+        Listing listing = new Listing(
+                UUID.fromString(listingRequest.getId()),
                 listingRequest.getTitle(),
                 listingRequest.getDescription(),
                 location,
@@ -45,11 +56,10 @@ public class ListingProvider {
                 listingRequest.getQuantity(),
                 listingStatus,
                 marketPlace,
-                listingRequest.getUpload_time(),
+                date,
                 listingRequest.getOwner_email_address());
 
         listingRepository.save(listing);
         return true;
     }
-
 }
