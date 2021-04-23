@@ -2,6 +2,7 @@ package com.worldofbooks.exercise.controller;
 
 
 import com.worldofbooks.exercise.model.Listing;
+import com.worldofbooks.exercise.model.Report;
 import com.worldofbooks.exercise.service.ReportProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ public class ReportController {
     ReportProvider reportProvider;
 
     @GetMapping("")
-    public List<Listing> getAll() {
+    public Report getAll() {
         return reportProvider.createReport();
     }
 

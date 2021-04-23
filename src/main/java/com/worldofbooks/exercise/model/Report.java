@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Report {
 
-    private Integer totalListing;
+    private Long totalListing;
 
     private Integer totalEbayListingNumber;
 

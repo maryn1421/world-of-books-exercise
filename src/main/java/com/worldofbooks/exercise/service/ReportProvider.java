@@ -1,6 +1,7 @@
 package com.worldofbooks.exercise.service;
 
 import com.worldofbooks.exercise.model.Listing;
+import com.worldofbooks.exercise.model.MonthlyData;
 import com.worldofbooks.exercise.model.MonthlyReport;
 import com.worldofbooks.exercise.model.Report;
 import com.worldofbooks.exercise.repository.ListingRepository;
@@ -37,14 +38,24 @@ public class ReportProvider {
     ListingRepository listingRepository;
 
 
-    public List<Listing> createReport() {
+    public Report createReport() {
         List<Listing> allListing = listingRepository.findAll();
-        getMonthlyReports();
+        List<MonthlyReport> monthlyReports = getMonthlyReports();
 
+        return buildReport(monthlyReports);
+    }
 
-        return allListing;
+    private Report buildReport(List<MonthlyReport> monthlyReports) {
+        Long TotalListings = listingRepository.count();
+    return Report.builder()
+            .totalListing(TotalListings)
+            .BestListerEmailAddress(getBestListerOfAllListings()).monthlyReports(monthlyReports).build();
+    }
 
-
+    private String getBestListerOfAllListings() {
+        int highestQuantity = listingRepository.getHighestQuantity();
+        Listing highestQuantityListing = listingRepository.findFirstByQuantity(highestQuantity);
+        return highestQuantityListing.getOwner_email_address();
     }
 
 
@@ -86,12 +97,16 @@ public class ReportProvider {
 
 
     public List<MonthlyReport> getMonthlyReports() {
-        List<MonthlyReport> results = new ArrayList<>();
         List<String> months = getMonths();
-        months.forEach(month ->{
-            System.out.println(getMonthlyListingsByDate(month));
+        List<MonthlyReport> monthlyReports = new ArrayList<>();
+        months.forEach(month -> {
+            List<Listing> monthlyListings = getMonthlyListingsByDate(month);
+
+            monthlyReports.add(getMReportFromMonthlyListings(monthlyListings));
         });
-        return results;
+
+
+        return monthlyReports;
 
     }
 
@@ -115,10 +130,64 @@ public class ReportProvider {
         });
 
         return results;
+    }
 
+    private MonthlyReport getMReportFromMonthlyListings(List<Listing> monthlyListings) {
+        Long totalEbayListings = getTotalListingsByMarketplaceName(monthlyListings, "EBAY");
+        double averageEbayListings = getAverageListingPriceByMarketPlace("EBAY", monthlyListings);
+        double averageAmazonListings = getAverageListingPriceByMarketPlace("AMAZON", monthlyListings);
+        Long totalAmazonListings = getTotalListingsByMarketplaceName(monthlyListings, "AMAZON");
+        double totalAmazonListingPrice = getTotalListingPriceByMarketplace(monthlyListings, "AMAZON");
+        double totalEbayListingPrice = getTotalListingPriceByMarketplace(monthlyListings, "EBAY");
 
+        MonthlyData data = new MonthlyData(
+                totalEbayListings, totalEbayListingPrice, averageEbayListings, totalAmazonListings, totalAmazonListingPrice, averageAmazonListings, getBestListerByMonthlyListing(monthlyListings)
+        );
+
+        return MonthlyReport.builder()
+                .date(monthlyListings.get(0).getUploadTime().toString().split(" ")[0]).monthlyData(data).build();
     }
 
 
+    private Long getTotalListingsByMarketplaceName(List<Listing> listings, String marketPlaceName) {
+        return listings.stream().filter(listing -> listing.getMarketplace().getMarketplace_name().equals(marketPlaceName)).count();
+    }
+
+
+    private double getTotalListingPriceByMarketplace(List<Listing> listings, String marketplaceName) {
+        double result = 0;
+        for (Listing listing : listings) {
+            if (listing.getMarketplace().getMarketplace_name().equals(marketplaceName)) {
+                result += listing.getListing_price();
+            }
+        }
+        return result;
+    }
+
+
+    private double getAverageListingPriceByMarketPlace(String marketplace, List<Listing> listings) {
+        double result = 0;
+        int size = 0;
+        for (Listing listing : listings) {
+            if (listing.getMarketplace().getMarketplace_name().equals(marketplace)) {
+                size++;
+                result += listing.getListing_price();
+            }
+        }
+        return result / size;
+    }
+
+    private String getBestListerByMonthlyListing(List<Listing> monthlyListings) {
+        Listing bestLister = monthlyListings.get(0);
+
+        for (Listing listing : monthlyListings) {
+            if (listing.getQuantity() > bestLister.getQuantity()) {
+                bestLister = listing;
+            }
+        }
+        return bestLister.getOwner_email_address();
+
+
+    }
 }
 
