@@ -1,14 +1,10 @@
 package com.worldofbooks.exercise.service;
 
-import com.worldofbooks.exercise.model.Listing;
-import com.worldofbooks.exercise.model.MonthlyData;
-import com.worldofbooks.exercise.model.MonthlyReport;
-import com.worldofbooks.exercise.model.Report;
+import com.worldofbooks.exercise.model.*;
 import com.worldofbooks.exercise.repository.ListingRepository;
 import com.worldofbooks.exercise.repository.ListingStatusRepository;
 import com.worldofbooks.exercise.repository.LocationRepository;
 import com.worldofbooks.exercise.repository.MarketplaceRepository;
-import com.worldofbooks.exercise.utility.ErrorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,8 +44,10 @@ public class ReportProvider {
     private Report buildReport(List<MonthlyReport> monthlyReports) {
         Long TotalListings = listingRepository.count();
     return Report.builder()
+            .totalAmazonListingNumber(getTotalListingNumbersByMarketplace("AMAZON"))
+            .totalEbayListingNumber(getTotalListingNumbersByMarketplace("EBAY"))
             .totalListing(TotalListings)
-            .BestListerEmailAddress(getBestListerOfAllListings()).monthlyReports(monthlyReports).build();
+            .bestListerEmailAddress(getBestListerOfAllListings()).monthlyReports(monthlyReports).build();
     }
 
     private String getBestListerOfAllListings() {
@@ -150,14 +148,14 @@ public class ReportProvider {
 
 
     private Long getTotalListingsByMarketplaceName(List<Listing> listings, String marketPlaceName) {
-        return listings.stream().filter(listing -> listing.getMarketplace().getMarketplace_name().equals(marketPlaceName)).count();
+        return listings.stream().filter(listing -> listing.getMarketplace().getMarketplaceName().equals(marketPlaceName)).count();
     }
 
 
     private double getTotalListingPriceByMarketplace(List<Listing> listings, String marketplaceName) {
         double result = 0;
         for (Listing listing : listings) {
-            if (listing.getMarketplace().getMarketplace_name().equals(marketplaceName)) {
+            if (listing.getMarketplace().getMarketplaceName().equals(marketplaceName)) {
                 result += listing.getListing_price();
             }
         }
@@ -169,7 +167,7 @@ public class ReportProvider {
         double result = 0;
         int size = 0;
         for (Listing listing : listings) {
-            if (listing.getMarketplace().getMarketplace_name().equals(marketplace)) {
+            if (listing.getMarketplace().getMarketplaceName().equals(marketplace)) {
                 size++;
                 result += listing.getListing_price();
             }
@@ -187,7 +185,19 @@ public class ReportProvider {
         }
         return bestLister.getOwner_email_address();
 
+    }
 
+    private int getTotalListingNumbersByMarketplace(String marketplaceName) {
+        try {
+            MarketPlace marketPlace = marketplaceRepository.findByMarketplaceName(marketplaceName);
+            return listingRepository.findAllByMarketplace(marketPlace).size();
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return 0;
     }
 }
 

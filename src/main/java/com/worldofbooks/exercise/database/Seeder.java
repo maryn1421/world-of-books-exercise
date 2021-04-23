@@ -173,7 +173,7 @@ public class Seeder {
                 marketplaceRepository.save(
                         MarketPlace.builder()
                                 .id(Long.parseLong(json.get("id").toString()))
-                                .marketplace_name((String) json.get("marketplace_name"))
+                                .marketplaceName((String) json.get("marketplace_name"))
                                 .build()
                 );
             } catch (Exception e) {

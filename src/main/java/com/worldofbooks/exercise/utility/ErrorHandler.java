@@ -36,7 +36,7 @@ public class ErrorHandler {
         Optional<MarketPlace> byId = marketplaceRepository.findById(listingRequest.getMarketplace());
 
         if (byId.isPresent()) {
-            marketPlaceName = byId.get().getMarketplace_name();
+            marketPlaceName = byId.get().getMarketplaceName();
         }
 
 
@@ -50,7 +50,7 @@ public class ErrorHandler {
 
 
     private String getCurrentTime() {
-        LocalDateTime dateTime = LocalDateTime.now(); // Gets the current date and time
+        LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String result =  dateTime.format(formatter).replaceAll(" ", "");
         result = result.replace(":", "");

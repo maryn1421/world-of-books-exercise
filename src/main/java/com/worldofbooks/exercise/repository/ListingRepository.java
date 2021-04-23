@@ -1,6 +1,7 @@
 package com.worldofbooks.exercise.repository;
 
 import com.worldofbooks.exercise.model.Listing;
+import com.worldofbooks.exercise.model.MarketPlace;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -24,6 +25,10 @@ public interface ListingRepository extends JpaRepository<Listing, UUID> {
 
 
     Listing findFirstByQuantity(int quantity);
+
+    List<Listing> findAllByMarketplace(MarketPlace marketplace);
+
+
 
 
 }

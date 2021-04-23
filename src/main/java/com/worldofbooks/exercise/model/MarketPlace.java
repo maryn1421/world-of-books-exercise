@@ -19,5 +19,5 @@ public class MarketPlace {
     @Id
     private Long id;
 
-    private String marketplace_name;
+    private String marketplaceName;
 }

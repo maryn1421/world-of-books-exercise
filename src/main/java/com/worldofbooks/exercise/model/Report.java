@@ -28,7 +28,7 @@ public class Report {
 
     private Double averageAmazonListingPrice;
 
-    private String BestListerEmailAddress;
+    private String bestListerEmailAddress;
 
     private List<MonthlyReport> monthlyReports;
 
