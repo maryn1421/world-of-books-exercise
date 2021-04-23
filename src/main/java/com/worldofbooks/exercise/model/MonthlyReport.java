@@ -11,19 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MonthlyReport {
 
-    private Long totalEbayListing;
 
-    private Double totalEbayListingPrice;
+    private String date;
 
-    private Double averageEbayListingPrice;
-
-    private Long totalAmazonListing;
-
-    private Double totalAmazonListingPrice;
-
-    private Double averageAmazonListingPrice;
-
-    private String BestListerEmailAddress;
+    private MonthlyData monthlyData;
 
 
 }
