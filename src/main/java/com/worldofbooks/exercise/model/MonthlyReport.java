@@ -1,28 +1,23 @@
 package com.worldofbooks.exercise.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Report {
+@Builder
+public class MonthlyReport {
 
-    private Integer totalListing;
-
-    private Integer totalEbayListingNumber;
+    private Long totalEbayListing;
 
     private Double totalEbayListingPrice;
 
     private Double averageEbayListingPrice;
 
-    private Integer totalAmazonListingNumber;
+    private Long totalAmazonListing;
 
     private Double totalAmazonListingPrice;
 
@@ -30,6 +25,5 @@ public class Report {
 
     private String BestListerEmailAddress;
 
-    private List<MonthlyReport> monthlyReports;
 
 }
