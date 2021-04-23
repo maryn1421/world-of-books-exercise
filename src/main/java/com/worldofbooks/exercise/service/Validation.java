@@ -71,7 +71,12 @@ public class Validation {
             return false;
         }
 
-        if (!isDateValid(listingRequest.getUpload_time()) || listingRequest.getUpload_time() == null)
+        if (listingRequest.getUpload_time() == null || !isDateValid(listingRequest.getUpload_time())) {
+            handleError(listingRequest,"date");
+            return false;
+        }
+
+
         if (!isEmailFormatValid(listingRequest.getOwner_email_address()) || listingRequest.getOwner_email_address() == null) {
             handleError(listingRequest,"email");
             return false;
@@ -108,8 +113,6 @@ public class Validation {
         } catch (Exception ex) {
             return false;
         }
-
-
 
     }
 

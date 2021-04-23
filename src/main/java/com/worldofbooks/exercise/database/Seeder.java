@@ -82,8 +82,8 @@ public class Seeder {
 
     public void getListingData() throws IOException, ParseException {
         {
-            JSONArray array = fetchByURl("https://my.api.mockaroo.com/listing?key=63304c70");
-
+            JSONArray array = fetchByURl("http://localhost:8080/listing");
+            //"https://my.api.mockaroo.com/listing?key=63304c70"
             array.forEach(item -> {
                 Location location = new Location();
                 MarketPlace marketPlace = new MarketPlace();
@@ -133,8 +133,8 @@ public class Seeder {
 
 
     public void getLocationData() throws IOException, ParseException {
-        JSONArray array = fetchByURl("https://my.api.mockaroo.com/location?key=63304c70");
-
+        JSONArray array = fetchByURl("http://localhost:8080/location");
+        //https://my.api.mockaroo.com/location?key=63304c70
         array.forEach(item -> {
             JSONParser parse = new JSONParser();
             try {
@@ -161,7 +161,8 @@ public class Seeder {
 
 
     public void getMarketplaceData() throws IOException, ParseException {
-        JSONArray array = fetchByURl("https://my.api.mockaroo.com/marketplace?key=63304c70");
+        //JSONArray array = fetchByURl("https://my.api.mockaroo.com/marketplace?key=63304c70");
+        JSONArray array = fetchByURl("http://localhost:8080/marketplace");
 
         array.forEach(marketplace -> {
             JSONParser parser = new JSONParser();
@@ -183,7 +184,8 @@ public class Seeder {
 
 
     public void getListingStatusData() throws IOException, ParseException {
-        JSONArray array = fetchByURl("https://my.api.mockaroo.com/listingStatus?key=63304c70");
+        //JSONArray array = fetchByURl("https://my.api.mockaroo.com/listingStatus?key=63304c70");
+        JSONArray array = fetchByURl("http://localhost:8080/listingStatus");
 
         array.forEach(listingStatus -> {
             JSONParser jsonParser = new JSONParser();
