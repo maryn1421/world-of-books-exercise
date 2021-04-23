@@ -18,6 +18,13 @@ public class FtpClient {
     private String password;
     private FTPClient ftp;
 
+    public FtpClient(String server, int port, String user, String password) {
+        this.server = server;
+        this.port = port;
+        this.user = user;
+        this.password = password;
+    }
+
     // constructor
 
     void open() throws IOException {
