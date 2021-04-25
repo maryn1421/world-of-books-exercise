@@ -180,14 +180,20 @@ public class ReportProvider {
     }
 
     private String getBestListerByMonthlyListing(List<Listing> monthlyListings) {
-        Listing bestLister = monthlyListings.get(0);
+        Map<String, Double> listers = new HashMap<>();
 
         for (Listing listing : monthlyListings) {
-            if (listing.getQuantity() > bestLister.getQuantity()) {
-                bestLister = listing;
+            if (!listers.containsKey(listing.getOwner_email_address())) {
+                listers.put(listing.getOwner_email_address(), (listing.getQuantity() * listing.getListing_price()));
+            } else {
+                listers.put(listing.getOwner_email_address(), listers.get(listing.getOwner_email_address()) + (listing.getQuantity() * listing.getListing_price()));
             }
         }
-        return bestLister.getOwner_email_address();
+        Map.Entry<String, Double> maxEntry = Collections.max(listers.entrySet(), Map.Entry.comparingByValue());
+        System.out.println(listers);
+
+
+        return maxEntry.getKey();
 
     }
 
@@ -233,7 +239,6 @@ public class ReportProvider {
         }
         return 0;
     }
-
 
 
 }
