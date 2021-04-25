@@ -8,6 +8,7 @@ import com.worldofbooks.exercise.service.ftp.FtpClient;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.IIOException;
@@ -21,6 +22,15 @@ import java.util.List;
 public class FileHandler {
     @Autowired
     ErrorHandler errorHandler;
+
+    @Value("${ftp.url}")
+    String ftpHost;
+    @Value("${ftp.username}")
+    String ftpUsername;
+    @Value("#{new Integer('${ftp.port}')}")
+    Integer ftpPort;
+    @Value("${ftp.password}")
+    String ftpPassword;
 
 
     public void writeToFile(File file, List<ImportError> errors) {
@@ -46,7 +56,7 @@ public class FileHandler {
 
     public void uploadToFTP(String fileName) throws IOException {
         try {
-            FtpClient ftpClient = new FtpClient("localhost", 21, "maryn", "Zolnai123");
+            FtpClient ftpClient = new FtpClient(ftpHost, ftpPort, ftpUsername, ftpPassword);
             ftpClient.open();
             ftpClient.putFileToPath(new File("src/main/resources/files/" + fileName), "/" + fileName);
 
