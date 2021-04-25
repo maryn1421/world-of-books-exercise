@@ -1,31 +1,22 @@
 package com.worldofbooks.exercise.service;
 
-import com.google.gson.Gson;
+
 import com.worldofbooks.exercise.model.*;
 import com.worldofbooks.exercise.repository.ListingRepository;
 import com.worldofbooks.exercise.repository.ListingStatusRepository;
 import com.worldofbooks.exercise.repository.LocationRepository;
 import com.worldofbooks.exercise.repository.MarketplaceRepository;
-import com.worldofbooks.exercise.service.ftp.FtpClient;
 import com.worldofbooks.exercise.utility.FileHandler;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.IIOException;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ReportProvider {
@@ -69,9 +60,7 @@ public class ReportProvider {
 
 
     private String getBestListerOfAllListings() {
-        int highestQuantity = listingRepository.getHighestQuantity();
-        Listing highestQuantityListing = listingRepository.findFirstByQuantity(highestQuantity);
-        return highestQuantityListing.getOwner_email_address();
+        return listingRepository.getBestSeller();
     }
 
 
@@ -244,5 +233,8 @@ public class ReportProvider {
         }
         return 0;
     }
+
+
+
 }
 

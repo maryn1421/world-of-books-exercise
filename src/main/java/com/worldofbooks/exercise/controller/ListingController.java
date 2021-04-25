@@ -31,7 +31,6 @@ public class ListingController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteListingById(@PathVariable("id") UUID id) {
-
         return ResponseEntity.ok("Listing deletion successfully");
 
     }

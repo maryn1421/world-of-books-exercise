@@ -29,6 +29,9 @@ public interface ListingRepository extends JpaRepository<Listing, UUID> {
     List<Listing> findAllByMarketplace(MarketPlace marketplace);
 
 
+    @Query(value = "SELECT owner_email_address  FROM listing GROUP BY owner_email_address, (quantity * listing_price) ORDER BY  (quantity * listing_price) DESC LIMIT 1", nativeQuery=true)
+    String getBestSeller();
+
 
 
 }

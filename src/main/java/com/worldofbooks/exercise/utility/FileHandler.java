@@ -24,9 +24,9 @@ public class FileHandler {
 
     public void writeToFile(File file, List<ImportError> errors){
         try {
-            FileWriter outputfile = new FileWriter(file);
+            FileWriter outputFile = new FileWriter(file);
 
-            CSVWriter writer = new CSVWriter(outputfile);
+            CSVWriter writer = new CSVWriter(outputFile);
 
 
             String[] header = { "ListingId", "MarketplaceName", "InvalidField" };
