@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+
 public class FtpClient {
 
     private String server;
@@ -25,9 +26,8 @@ public class FtpClient {
         this.password = password;
     }
 
-    // constructor
 
-    void open() throws IOException {
+    public void open() throws IOException {
         ftp = new FTPClient();
 
         ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
@@ -58,7 +58,7 @@ public class FtpClient {
         ftp.retrieveFile(source, out);
     }
 
-    void putFileToPath(File file, String path) throws IOException {
+    public void putFileToPath(File file, String path) throws IOException {
         ftp.storeFile(path, new FileInputStream(file));
     }
 

@@ -1,13 +1,21 @@
 package com.worldofbooks.exercise.service;
 
+import com.google.gson.Gson;
 import com.worldofbooks.exercise.model.*;
 import com.worldofbooks.exercise.repository.ListingRepository;
 import com.worldofbooks.exercise.repository.ListingStatusRepository;
 import com.worldofbooks.exercise.repository.LocationRepository;
 import com.worldofbooks.exercise.repository.MarketplaceRepository;
+import com.worldofbooks.exercise.service.ftp.FtpClient;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.IIOException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,8 +46,51 @@ public class ReportProvider {
         List<Listing> allListing = listingRepository.findAll();
         List<MonthlyReport> monthlyReports = getMonthlyReports();
 
-        return buildReport(monthlyReports);
+        Report report = buildReport(monthlyReports);
+
+        createJsonFile(report);
+
+
+        return report;
     }
+
+
+    private void upload(String fileName) throws IOException {
+        try {
+            FtpClient ftpClient = new FtpClient("localhost", 21, "maryn", "Zolnai123");
+            ftpClient.open();
+            ftpClient.putFileToPath(new File("src/main/resources/files/" + fileName), "/" + fileName);
+
+        }
+        catch (IIOException exception) {
+            exception.printStackTrace();
+        }
+
+    }
+
+
+
+    private void createJsonFile(Report report) {
+        try {
+            String jsonInString = new Gson().toJson(report);
+            JSONParser parser = new JSONParser();
+
+            JSONObject mJSONObject = (JSONObject) parser.parse(jsonInString);
+            System.out.println(mJSONObject);
+            String fileName = "output125.json";
+            FileWriter file = new FileWriter("src/main/resources/files/" + fileName);
+            file.write(mJSONObject.toJSONString());
+            file.close();
+
+            upload(fileName);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     private Report buildReport(List<MonthlyReport> monthlyReports) {
         Long TotalListings = listingRepository.count();
