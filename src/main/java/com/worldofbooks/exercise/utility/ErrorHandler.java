@@ -49,7 +49,7 @@ public class ErrorHandler {
     }
 
 
-    private String getCurrentTime() {
+    String getCurrentTime() {
         LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String result =  dateTime.format(formatter).replaceAll(" ", "");

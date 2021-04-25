@@ -19,27 +19,27 @@ import java.util.List;
 
 @Service
 public class FileHandler {
+    @Autowired
+    ErrorHandler errorHandler;
 
 
-
-    public void writeToFile(File file, List<ImportError> errors){
+    public void writeToFile(File file, List<ImportError> errors) {
         try {
             FileWriter outputFile = new FileWriter(file);
 
             CSVWriter writer = new CSVWriter(outputFile);
 
 
-            String[] header = { "ListingId", "MarketplaceName", "InvalidField" };
+            String[] header = {"ListingId", "MarketplaceName", "InvalidField"};
             writer.writeNext(header);
 
 
             for (ImportError error : errors) {
-                String[] data1 = { error.getListingId().toString(), error.getMarketplaceName(), error.getInvalidField() };
+                String[] data1 = {error.getListingId().toString(), error.getMarketplaceName(), error.getInvalidField()};
                 writer.writeNext(data1);
             }
             writer.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -50,14 +50,11 @@ public class FileHandler {
             ftpClient.open();
             ftpClient.putFileToPath(new File("src/main/resources/files/" + fileName), "/" + fileName);
 
-        }
-        catch (IIOException exception) {
+        } catch (IIOException exception) {
             exception.printStackTrace();
         }
 
     }
-
-
 
 
     public void createJsonFile(Report report) {
@@ -66,20 +63,18 @@ public class FileHandler {
             JSONParser parser = new JSONParser();
 
             JSONObject mJSONObject = (JSONObject) parser.parse(jsonInString);
-            System.out.println(mJSONObject);
-            String fileName = "output125.json";
+            String fileName = "report" + errorHandler.getCurrentTime() + ".json";
+
             FileWriter file = new FileWriter("src/main/resources/files/" + fileName);
             file.write(mJSONObject.toJSONString());
             file.close();
 
             uploadToFTP(fileName);
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
 
 }

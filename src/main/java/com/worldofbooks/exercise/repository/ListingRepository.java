@@ -19,19 +19,10 @@ public interface ListingRepository extends JpaRepository<Listing, UUID> {
     @Query(value = "select  max(uploadTime) from Listing ")
     Date getHighestDate();
 
-
-    @Query(value = "select max(quantity) from Listing ")
-    Integer getHighestQuantity();
-
-
-    Listing findFirstByQuantity(int quantity);
-
     List<Listing> findAllByMarketplace(MarketPlace marketplace);
 
-
-    @Query(value = "SELECT owner_email_address  FROM listing GROUP BY owner_email_address, (quantity * listing_price) ORDER BY  (quantity * listing_price) DESC LIMIT 1", nativeQuery=true)
+    @Query(value = "SELECT owner_email_address  FROM listing GROUP BY owner_email_address, (quantity * listing_price) ORDER BY  (quantity * listing_price) DESC LIMIT 1", nativeQuery = true)
     String getBestSeller();
-
 
 
 }
