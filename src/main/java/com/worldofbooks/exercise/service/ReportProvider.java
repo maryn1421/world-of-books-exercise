@@ -7,6 +7,7 @@ import com.worldofbooks.exercise.repository.ListingStatusRepository;
 import com.worldofbooks.exercise.repository.LocationRepository;
 import com.worldofbooks.exercise.repository.MarketplaceRepository;
 import com.worldofbooks.exercise.service.ftp.FtpClient;
+import com.worldofbooks.exercise.utility.FileHandler;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,60 +42,20 @@ public class ReportProvider {
     @Autowired
     ListingRepository listingRepository;
 
+    @Autowired
+    FileHandler fileHandler;
+
 
     public Report createReport() {
-        List<Listing> allListing = listingRepository.findAll();
         List<MonthlyReport> monthlyReports = getMonthlyReports();
-
         Report report = buildReport(monthlyReports);
-
-        createJsonFile(report);
-
-
+        fileHandler.createJsonFile(report);
         return report;
     }
 
 
-    private void upload(String fileName) throws IOException {
-        try {
-            FtpClient ftpClient = new FtpClient("localhost", 21, "maryn", "Zolnai123");
-            ftpClient.open();
-            ftpClient.putFileToPath(new File("src/main/resources/files/" + fileName), "/" + fileName);
-
-        }
-        catch (IIOException exception) {
-            exception.printStackTrace();
-        }
-
-    }
-
-
-
-    private void createJsonFile(Report report) {
-        try {
-            String jsonInString = new Gson().toJson(report);
-            JSONParser parser = new JSONParser();
-
-            JSONObject mJSONObject = (JSONObject) parser.parse(jsonInString);
-            System.out.println(mJSONObject);
-            String fileName = "output125.json";
-            FileWriter file = new FileWriter("src/main/resources/files/" + fileName);
-            file.write(mJSONObject.toJSONString());
-            file.close();
-
-            upload(fileName);
-
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
     private Report buildReport(List<MonthlyReport> monthlyReports) {
         Long TotalListings = listingRepository.count();
-
         return Report.builder()
                 .totalAmazonListingNumber(getTotalListingNumbersByMarketplace("AMAZON"))
                 .totalEbayListingNumber(getTotalListingNumbersByMarketplace("EBAY"))
@@ -127,8 +88,8 @@ public class ReportProvider {
     public List<String> getMonths() {
         List<String> results = new ArrayList<>();
 
-        String date11 = getMinimumDate().toString().split(" ")[0];
-        String date22 = getMaximumDate().toString().split(" ")[0];
+        String startDate = getMinimumDate().toString().split(" ")[0];
+        String endDate = getMaximumDate().toString().split(" ")[0];
 
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -136,8 +97,8 @@ public class ReportProvider {
         Calendar finishCalendar = Calendar.getInstance();
 
         try {
-            beginCalendar.setTime(formatter.parse(date11));
-            finishCalendar.setTime(formatter.parse(date22));
+            beginCalendar.setTime(formatter.parse(startDate));
+            finishCalendar.setTime(formatter.parse(endDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -156,11 +117,8 @@ public class ReportProvider {
         List<MonthlyReport> monthlyReports = new ArrayList<>();
         months.forEach(month -> {
             List<Listing> monthlyListings = getMonthlyListingsByDate(month);
-
             monthlyReports.add(getMReportFromMonthlyListings(monthlyListings));
         });
-
-
         return monthlyReports;
 
     }
@@ -283,7 +241,6 @@ public class ReportProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-
         }
         return 0;
     }

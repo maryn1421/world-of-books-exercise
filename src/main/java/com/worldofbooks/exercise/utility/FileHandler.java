@@ -1,9 +1,16 @@
 package com.worldofbooks.exercise.utility;
 
+import com.google.gson.Gson;
 import com.opencsv.CSVWriter;
 import com.worldofbooks.exercise.model.ImportError;
+import com.worldofbooks.exercise.model.Report;
+import com.worldofbooks.exercise.service.ftp.FtpClient;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.IIOException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,6 +40,42 @@ public class FileHandler {
             writer.close();
         }
         catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void uploadToFTP(String fileName) throws IOException {
+        try {
+            FtpClient ftpClient = new FtpClient("localhost", 21, "maryn", "Zolnai123");
+            ftpClient.open();
+            ftpClient.putFileToPath(new File("src/main/resources/files/" + fileName), "/" + fileName);
+
+        }
+        catch (IIOException exception) {
+            exception.printStackTrace();
+        }
+
+    }
+
+
+
+
+    public void createJsonFile(Report report) {
+        try {
+            String jsonInString = new Gson().toJson(report);
+            JSONParser parser = new JSONParser();
+
+            JSONObject mJSONObject = (JSONObject) parser.parse(jsonInString);
+            System.out.println(mJSONObject);
+            String fileName = "output125.json";
+            FileWriter file = new FileWriter("src/main/resources/files/" + fileName);
+            file.write(mJSONObject.toJSONString());
+            file.close();
+
+            uploadToFTP(fileName);
+
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
