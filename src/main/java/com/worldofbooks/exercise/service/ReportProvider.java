@@ -43,12 +43,18 @@ public class ReportProvider {
 
     private Report buildReport(List<MonthlyReport> monthlyReports) {
         Long TotalListings = listingRepository.count();
-    return Report.builder()
-            .totalAmazonListingNumber(getTotalListingNumbersByMarketplace("AMAZON"))
-            .totalEbayListingNumber(getTotalListingNumbersByMarketplace("EBAY"))
-            .totalListing(TotalListings)
-            .bestListerEmailAddress(getBestListerOfAllListings()).monthlyReports(monthlyReports).build();
+
+        return Report.builder()
+                .totalAmazonListingNumber(getTotalListingNumbersByMarketplace("AMAZON"))
+                .totalEbayListingNumber(getTotalListingNumbersByMarketplace("EBAY"))
+                .totalListing(TotalListings)
+                .totalAmazonListingPrice(getTotalListingPriceByMarketplace("AMAZON"))
+                .totalEbayListingPrice(getTotalListingPriceByMarketplace("EBAY"))
+                .averageAmazonListingPrice(getAverageListingPriceByMarketplace("AMAZON"))
+                .averageEbayListingPrice(getAverageListingPriceByMarketplace("EBAY"))
+                .bestListerEmailAddress(getBestListerOfAllListings()).monthlyReports(monthlyReports).build();
     }
+
 
     private String getBestListerOfAllListings() {
         int highestQuantity = listingRepository.getHighestQuantity();
@@ -192,8 +198,39 @@ public class ReportProvider {
             MarketPlace marketPlace = marketplaceRepository.findByMarketplaceName(marketplaceName);
             return listingRepository.findAllByMarketplace(marketPlace).size();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+
         }
-        catch (Exception e) {
+        return 0;
+    }
+
+    private double getTotalListingPriceByMarketplace(String marketplaceName) {
+        try {
+            MarketPlace marketPlace = marketplaceRepository.findByMarketplaceName(marketplaceName);
+            double result;
+            List<Listing> allListing = listingRepository.findAllByMarketplace(marketPlace);
+
+            result = allListing.stream().mapToDouble(Listing::getListing_price).sum();
+            return result;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return 0;
+    }
+
+    private double getAverageListingPriceByMarketplace(String marketplaceName) {
+        try {
+            MarketPlace marketPlace = marketplaceRepository.findByMarketplaceName(marketplaceName);
+            double result;
+            List<Listing> allListing = listingRepository.findAllByMarketplace(marketPlace);
+
+            result = allListing.stream().mapToDouble(Listing::getListing_price).sum();
+            return result / allListing.size();
+
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
