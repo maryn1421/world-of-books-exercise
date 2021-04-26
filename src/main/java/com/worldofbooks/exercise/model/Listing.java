@@ -42,7 +42,7 @@ public class Listing {
     @ManyToOne
     private MarketPlace marketplace;
 
-    private Date upload_time;
+    private Date uploadTime;
 
     private String owner_email_address;
 

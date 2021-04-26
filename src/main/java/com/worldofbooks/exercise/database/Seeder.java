@@ -57,17 +57,15 @@ public class Seeder {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.connect();
-        int responsecode = conn.getResponseCode();
+        int responseCode = conn.getResponseCode();
 
-
-        if (responsecode != 200)
-            throw new RuntimeException("HttpResponseCode: " + responsecode);
+        if (responseCode != 200)
+            throw new RuntimeException("HttpResponseCode: " + responseCode);
         else {
             Scanner sc = new Scanner(url.openStream());
             while (sc.hasNext()) {
                 inline.append(sc.nextLine());
             }
-
             sc.close();
         }
 
@@ -76,31 +74,15 @@ public class Seeder {
 
         conn.disconnect();
         return array;
-
     }
 
-
     public void getListingData() throws IOException, ParseException {
-        {
             JSONArray array = fetchByURl("https://my.api.mockaroo.com/listing?key=63304c70");
-
             array.forEach(item -> {
-                Location location = new Location();
-                MarketPlace marketPlace = new MarketPlace();
-                ListingStatus listingStatus = new ListingStatus();
-
-
-
-
-
 
                 JSONParser parse = new JSONParser();
                 try {
                     JSONObject json = (JSONObject) parse.parse(item.toString());
-
-
-
-
                            ListingRequest request =  ListingRequest.builder()
                                     .id((String) json.get("id"))
                                     .title((String) json.get("title"))
@@ -118,23 +100,17 @@ public class Seeder {
 
                            if (validation.validateNewListing(request)) {
                                listingProvider.addNewListing(request);
-                           };
-
-
-
+                           }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
             errorHandler.submitErrorToFile();
-        }
-
     }
 
 
     public void getLocationData() throws IOException, ParseException {
         JSONArray array = fetchByURl("https://my.api.mockaroo.com/location?key=63304c70");
-
         array.forEach(item -> {
             JSONParser parse = new JSONParser();
             try {
@@ -172,7 +148,7 @@ public class Seeder {
                 marketplaceRepository.save(
                         MarketPlace.builder()
                                 .id(Long.parseLong(json.get("id").toString()))
-                                .marketplace_name((String) json.get("marketplace_name"))
+                                .marketplaceName((String) json.get("marketplace_name"))
                                 .build()
                 );
             } catch (Exception e) {
@@ -183,8 +159,7 @@ public class Seeder {
 
 
     public void getListingStatusData() throws IOException, ParseException {
-        JSONArray array = fetchByURl("https://my.api.mockaroo.com/listingStatus?key=63304c70");
-
+       JSONArray array = fetchByURl("https://my.api.mockaroo.com/listingStatus?key=63304c70");
         array.forEach(listingStatus -> {
             JSONParser jsonParser = new JSONParser();
 
@@ -197,13 +172,10 @@ public class Seeder {
                                 .status_name((String) json.get("status_name"))
                                 .build()
                 );
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         });
     }
-
 
 }
