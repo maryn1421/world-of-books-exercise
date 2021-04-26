@@ -162,7 +162,6 @@ public class Seeder {
        JSONArray array = fetchByURl("https://my.api.mockaroo.com/listingStatus?key=63304c70");
         array.forEach(listingStatus -> {
             JSONParser jsonParser = new JSONParser();
-
             try {
                 JSONObject json = (JSONObject) jsonParser.parse(listingStatus.toString());
 

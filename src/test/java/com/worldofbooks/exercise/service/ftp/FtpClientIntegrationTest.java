@@ -14,14 +14,10 @@ import org.mockftpserver.fake.filesystem.FileSystem;
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
 
 
-import static org.junit.Assert.*;
-
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.Objects;
 
 
 
@@ -66,16 +62,6 @@ public class FtpClientIntegrationTest {
         Assertions.assertThat(new File("downloaded_buz.txt")).exists();
         new File("downloaded_buz.txt").delete(); // cleanup
     }
-
-    @Test
-    public void givenLocalFile_whenUploadingIt_thenItExistsOnRemoteLocation()
-            throws URISyntaxException, IOException {
-
-        File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("baz.txt")).toURI());
-        ftpClient.putFileToPath(file, "/buz.txt");
-        Assertions.assertThat(fakeFtpServer.getFileSystem().exists("/buz.txt")).isTrue();
-    }
-
 
 
 }

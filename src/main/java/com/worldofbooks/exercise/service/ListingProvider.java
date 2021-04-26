@@ -34,7 +34,7 @@ public class ListingProvider {
     @Autowired
     Validation validation;
 
-    public Boolean addNewListing(ListingRequest listingRequest) throws ParseException {
+    public void addNewListing(ListingRequest listingRequest) throws ParseException {
         Location location = locationRepository.findById(listingRequest.getLocation_id()).get();
 
         ListingStatus listingStatus = listingStatusRepository.findById(listingRequest.getListing_status()).get();
@@ -60,6 +60,5 @@ public class ListingProvider {
                 listingRequest.getOwner_email_address());
 
         listingRepository.save(listing);
-        return true;
     }
 }

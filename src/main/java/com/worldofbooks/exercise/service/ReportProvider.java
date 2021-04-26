@@ -37,11 +37,10 @@ public class ReportProvider {
     FileHandler fileHandler;
 
 
-    public Report createReport() {
+    public void createReport() {
         List<MonthlyReport> monthlyReports = getMonthlyReports();
         Report report = buildReport(monthlyReports);
         fileHandler.createJsonFile(report);
-        return report;
     }
 
 
@@ -109,7 +108,6 @@ public class ReportProvider {
             monthlyReports.add(getMReportFromMonthlyListings(monthlyListings));
         });
         return monthlyReports;
-
     }
 
 
@@ -130,7 +128,6 @@ public class ReportProvider {
                 results.add(listing);
             }
         });
-
         return results;
     }
 
@@ -190,11 +187,8 @@ public class ReportProvider {
             }
         }
         Map.Entry<String, Double> maxEntry = Collections.max(listers.entrySet(), Map.Entry.comparingByValue());
-        System.out.println(listers);
-
 
         return maxEntry.getKey();
-
     }
 
     private int getTotalListingNumbersByMarketplace(String marketplaceName) {
@@ -239,7 +233,5 @@ public class ReportProvider {
         }
         return 0;
     }
-
-
 }
 
